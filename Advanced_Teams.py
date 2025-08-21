@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# This uses GET API to generate a csv file that contain 8 columns:
-# Pokemon Number, Pokemon Name, Total Stats, Ability1, Ability2, Ability3, Type1, Type2
 # Original Creator: Geraint Palmer - palmergi1@cardiff.ac.uk
 # Modified by: John Farrugia - jfarrugia87@gmail.com
 
@@ -9,7 +7,7 @@ import pandas, pulp
 import numpy as np
 
 # type chart values
-type_IOAweaknesses = {
+type_weaknesses = {
     'normal': [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
     'fire': [1, 0.5, 2, 1, 0.5, 0.5, 1, 1, 2, 1, 1, 0.5, 2, 1, 1, 1, 0.5, 0.5],
     'water': [1, 0.5, 0.5, 2, 2, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1],
@@ -65,206 +63,143 @@ special = {
     
     
 # Store Combinations and Weakness Values
-IOAtypeNames = []
-IOAweaknesses = []
-IOAstrengths = []
-IOArotom = []
+typenames = []
+weaknesses = []
+strengths = []
 
 #Import data from spreadsheet
-data = pandas.read_excel('IOApokemondata.xlsx', keep_default_na=False)
+data = pandas.read_excel('combinations.xlsx', keep_default_na=False)
 text_file = open("AdvancedTeams.txt", "w")
 
 #Import all the data from csv
-if IOAtypeNames == []:
-    for index, row in data.iterrows():
-        csvname = data.iat[0,1]
-        csvtype1 = data.iat[0,2]
-        csvtype2 = data.iat[0,3]  
-        csvability1 = data.iat[0,4]
-        csvability2 = data.iat [0,5]
-        csvability3 = data.iat [0,6]
-        
-        weakness = list(np.array(type_IOAweaknesses[csvtype1]))
-        strength = list(np.array(type_strenghts[csvtype1]))
-        typename = csvtype1
-        if csvtype2 !='':
-            weakness = list(np.array(type_IOAweaknesses[csvtype1]) * np.array(type_IOAweaknesses[csvtype2]))
-            strength = list(np.array(type_strenghts[csvtype1]) + np.array(type_strenghts[csvtype2]))
-            typename = csvtype1 + " " + csvtype2
-        
-        if csvname != 'Rotom':
-            if 'Rotom' in csvname:
-                typename = typename + ' Rotom'
-            if (csvability1 or csvability2 or csvability3) == 'Lightning Rod':
-                pkmnname = typename + ' Lightning Rod'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Volt Absorb':
-                pkmnname = typename + ' Volt Absorb'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Motor Drive':
-                pkmnname = typename + ' Motor Drive'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Levitate':
-                pkmnname = typename + ' Levitate'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Water Absorb':
-                pkmnname = typename + ' Water Absorb'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Storm Drain':
-                pkmnname = typename + ' Storm Drain'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Water Absorb':
-                pkmnname = typename + ' Water Absorb'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Flash Fire':
-                pkmnname = typename + ' Flash Fire'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Sap Sipper':
-                pkmnname = typename + ' Sap Sipper'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Dry Skin':
-                pkmnname = typename + ' Dry Skin'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Thick Fat':
-                pkmnname = typename + ' Thick Fat'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Solid Rock':
-                pkmnname = typename + ' Solid Rock'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            if (csvability1 or csvability2 or csvability3) == 'Filter':
-                pkmnname = typename + ' Filter'
-                if pkmnname not in IOAtypeNames:
-                    IOAweaknesses.append(weakness)  
-                    IOAtypeNames.append(pkmnname)
-                    IOAstrengths.append(strength)
-            elif typename not in IOAtypeNames:
-                IOAweaknesses.append(weakness)  
-                IOAtypeNames.append(typename)
-                IOAstrengths.append(strength)
-        
-        data.drop(index, inplace=True)
-    # Calculate Ability Bonuses
-    for i in range(len(IOAtypeNames)):
-        if 'Lightning Rod' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_electric'])
-        elif 'Volt Absorb' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_electric'])
-        elif 'Motor Drive' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_electric'])
-        elif 'Levitate' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_ground'])
-        elif 'Water Absorb' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_water'])
-        elif 'Storm Drain' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_water'])
-        elif 'Flash Fire' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_fire'])
-        elif 'Sap Sipper' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['immune_grass'])
-        elif 'Dry Skin' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['dryskin'])
-        elif 'Thick Fat' in IOAtypeNames[i]:
-            IOAweaknesses[i] = IOAweaknesses[i] * np.array(special['thickfat'])
-        elif 'Solid Rock' in IOAtypeNames[i]:
-            IOAweaknesses[i] = [r*0.75 if r > 1 else r*1 for r in IOAweaknesses[i]] # Only weakness values are reduced by 75%
-        elif 'Filter' in IOAtypeNames[i]:
-            IOAweaknesses[i] = [r*0.75 if r > 1 else r*1 for r in IOAweaknesses[i]] # Only weakness values are reduced by 75%
-        
+for index, row in data.iterrows():
+    csvtype1 = data.iat[0,0]
+    csvtype2 = data.iat[0,1]  
+    csvability1 = data.iat[0,2]
+    csvability2 = data.iat [0,3]
+    
+    weakness = list(np.array(type_weaknesses[csvtype1]))
+    strength = list(np.array(type_strenghts[csvtype1]))
+    typename = csvtype1
+    if csvtype2 !='':
+        weakness = list(np.array(type_weaknesses[csvtype1]) * np.array(type_weaknesses[csvtype2]))
+        strength = list(np.array(type_strenghts[csvtype1]) + np.array(type_strenghts[csvtype2]))
+        typename = csvtype1 + " " + csvtype2
+    
+    if csvability1 !='':
+        pkmnname = typename + " " + csvability1
+        weaknesses.append(weakness)  
+        typenames.append(pkmnname)
+        strengths.append(strength)
+    else:
+        weaknesses.append(weakness)  
+        typenames.append(typename)
+        strengths.append(strength)
+    
+    if csvability2 !='':
+        pkmnname = typename + " " + csvability2
+        weaknesses.append(weakness)  
+        typenames.append(pkmnname)
+        strengths.append(strength)
+    else:
+        weaknesses.append(weakness)  
+        typenames.append(typename)
+        strengths.append(strength)
+    
+    data.drop(index, inplace=True)
 
-    for i in range(len(IOAtypeNames)):
-        if 'Rotom' in IOAtypeNames[i]:
-            IOArotom.append(1)
-        else:
-            IOArotom.append(0)
-x = pulp.LpVariable.dicts("x", range(len(IOAweaknesses)), cat=pulp.LpBinary)
+# Calculate Ability Bonuses
+for i in range(len(typenames)):
+    if 'Lightning Rod' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_electric'])
+    elif 'Volt Absorb' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_electric'])
+    elif 'Motor Drive' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_electric'])
+    elif 'Levitate' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_ground'])
+    elif 'Water Absorb' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_water'])
+    elif 'Storm Drain' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_water'])
+    elif 'Flash Fire' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_fire'])
+    elif 'Sap Sipper' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['immune_grass'])
+    elif 'Dry Skin' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['dryskin'])
+    elif 'Thick Fat' in typenames[i]:
+        weaknesses[i] = weaknesses[i] * np.array(special['thickfat'])
+    elif 'Solid Rock' in typenames[i]:
+        weaknesses[i] = [r*0.75 if r > 1 else r*1 for r in weaknesses[i]] # Only weakness values are reduced by 75%
+    elif 'Filter' in typenames[i]:
+        weaknesses[i] = [r*0.75 if r > 1 else r*1 for r in weaknesses[i]] # Only weakness values are reduced by 75%
 
-can_resist = [[1 if IOAweaknesses[i][t] < 1 else 0 for t in range(18)] for i in range(len(IOAweaknesses))]
-is_weak = [[1 if IOAweaknesses[i][t] > 1 else 0 for t in range(18)] for i in range(len(IOAweaknesses))]
-is_strong = [[1 if IOAstrengths[i][t] >= 1 else 0 for t in range(18)] for i in range(len(IOAweaknesses))]
+x = pulp.LpVariable.dicts("x", range(len(weaknesses)), cat=pulp.LpBinary)
 
-def problem_solve():
-    for i in range(1, 4):
-        if goal == 1:
-            prob = pulp.LpProblem("PokemonpairCombos", pulp.LpMaximize)
-        else:
-            prob = pulp.LpProblem("PokemonpairCombos", pulp.LpMinimize)
+can_resist = [[1 if weaknesses[i][t] < 1 else 0 for t in range(18)] for i in range(len(weaknesses))]
+is_weak = [[1 if weaknesses[i][t] > 1 else 0 for t in range(18)] for i in range(len(weaknesses))]
+is_strong = [[1 if strengths[i][t] >= 1 else 0 for t in range(18)] for i in range(len(weaknesses))]
+
+def minimise_solve():
+    for i in range(3):
+        i=i+1
         if i == 3:
             r = 2
         else:
             r = i
-        text_file.write("With Minimum "+str(r)+" Resistances and Maximum "+str(i)+" IOAweaknesses"+'\n')
+        text_file.write("With Minimum "+str(r)+" Resistances and Maximum "+str(i)+" Weaknesses"+'\n')
+        prob = pulp.LpProblem("PokemonpairCombos", pulp.LpMinimize)
+        prob += objective_function
+        prob += sum([x[t] for t in range(len(weaknesses))]) == 6
+        for tp in range(18):
+            prob += sum([can_resist[i][tp] * x[i] for i in range(len(weaknesses))]) >= r # This cannot be higher than 2
+            prob += sum([is_weak[i][tp] * x[i] for i in range(len(weaknesses))]) <= i
+            prob += sum([is_strong[i][tp] * x[i] for i in range(len(weaknesses))]) >= 1 # This cannot be higher than 1
+        prob.solve()
+        for i in range(len(weaknesses)):
+            if x[i].value() > 0:
+                text_file.write(str(typenames[i])+'\n')
+                    
+
+def maximise_solve():
+    for i in range(3):
+        i=i+1
+        if i == 3:
+            r = 2
+        else:
+            r = i
+        text_file.write("With Minimum "+str(r)+" Resistances and Maximum "+str(i)+" Weaknesses"+'\n')
         prob = pulp.LpProblem("PokemonpairCombos", pulp.LpMaximize)
         prob += objective_function
-        prob += sum([x[t] for t in range(len(IOAweaknesses))]) == 6
+        prob += sum([x[t] for t in range(len(weaknesses))]) == 6
         for tp in range(18):
-            prob += sum([can_resist[i][tp] * x[i] for i in range(len(IOAweaknesses))]) >= r # This cannot be higher than 2
-            prob += sum([is_weak[i][tp] * x[i] for i in range(len(IOAweaknesses))]) <= i
-            prob += sum([is_strong[i][tp] * x[i] for i in range(len(IOAweaknesses))]) >= 1 # This cannot be higher than 1
-            prob += sum([IOArotom[i] * x[i] for i in range(len(IOAweaknesses))]) <= 1 # This cannot be higher than 1
+            prob += sum([can_resist[i][tp] * x[i] for i in range(len(weaknesses))]) >= r # This cannot be higher than 2
+            prob += sum([is_weak[i][tp] * x[i] for i in range(len(weaknesses))]) <= i
+            prob += sum([is_strong[i][tp] * x[i] for i in range(len(weaknesses))]) >= 1 # This cannot be higher than 1
         prob.solve()
-        for i in range(len(IOAweaknesses)):
+        for i in range(len(weaknesses)):
             if x[i].value() > 0:
-                text_file.write(str(IOAtypeNames[i])+'\n')
-#goal = 1 
-#resist = [sum([1 if w < 1 else 0 for w in IOAweaknesses[i]]) for i in range(len(IOAweaknesses))]
-#objective_function = sum([resist[t] * x[t] for t in range(len(IOAweaknesses))])
-#text_file.write("Max Resist"+'\n')
-#problem_solve()
-#text_file.write('\n')
-#superresist = [sum([w if w < 0.5 else 0 for w in IOAweaknesses[i]]) for i in range(len(IOAweaknesses))]
-#objective_function = sum([superresist[t] * x[t] for t in range(len(IOAweaknesses))])
-#text_file.write("Max SuperResist"+'\n')
-#problem_solve()
-#text_file.write('\n')
-goal = 0
-#weak = [sum([1 if w > 1 else 0 for w in IOAweaknesses[i]]) for i in range(len(IOAweaknesses))]
-#objective_function = sum([weak[t] * x[t] for t in range(len(IOAweaknesses))])
-#text_file.write("Min Weak"+'\n')
-#problem_solve()
-#text_file.write('\n')
-#superweak = [sum([1 if w > 2 else 0 for w in IOAweaknesses[i]]) for i in range(len(IOAweaknesses))]
-#objective_function = sum([superweak[t] * x[t] for t in range(len(IOAweaknesses))])
-#text_file.write("Min Superweak"+'\n')
-#problem_solve()
+                text_file.write(str(typenames[i])+'\n')
+
+resist = [sum([1 if w < 1 else 0 for w in weaknesses[i]]) for i in range(len(weaknesses))]
+objective_function = sum([resist[t] * x[t] for t in range(len(weaknesses))])
+text_file.write("Max Resist"+'\n')
+maximise_solve()
 text_file.write('\n')
-text_file.write("Min Total"+'\n')
-total = [sum(IOAweaknesses[i]) for i in range(len(IOAweaknesses))]
-objective_function = sum([total[t] * x[t] for t in range(len(IOAweaknesses))])
-problem_solve()
+superresist = [sum([w if w < 0.5 else 0 for w in weaknesses[i]]) for i in range(len(weaknesses))]
+objective_function = sum([superresist[t] * x[t] for t in range(len(weaknesses))])
+text_file.write("Max SuperResist"+'\n')
+maximise_solve()
+text_file.write('\n')
+weak = [sum([1 if w > 1 else 0 for w in weaknesses[i]]) for i in range(len(weaknesses))]
+objective_function = sum([weak[t] * x[t] for t in range(len(weaknesses))])
+text_file.write("Min Weak"+'\n')
+minimise_solve()
+text_file.write('\n')
+superweak = [sum([1 if w > 2 else 0 for w in weaknesses[i]]) for i in range(len(weaknesses))]
+objective_function = sum([superweak[t] * x[t] for t in range(len(weaknesses))])
+text_file.write("Min Superweak"+'\n')
+minimise_solve()
+text_file.write('\n')
 text_file.close()
